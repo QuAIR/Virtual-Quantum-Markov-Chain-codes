@@ -18,10 +18,14 @@ rhoW = v_w * v_w';
 rhoW = rhoW / trace(rhoW);
 
 p = 0.0:0.01:1.0;
-cost_store = zeros(1, numel(p));
+% p = 0.725;
+
+cost_list = zeros(1, numel(p));
 for j=1:numel(p)
 
-    rhoABC = (1-p(j))*rhoW + p(j)*eye(2^3) / 2^3;
+    % rhoABC = (1-p(j))*rhoW + p(j)*eye(2^3) / 2^3;
+    rhoABC = (1-p(j))*rhoW + p(j)*rhoGHZ;
+    % rhoABC = (7-3*sqrt(5)) * rhoGHZ + (1-(7-3*sqrt(5)))* rhoW;
     
     JI = MaxEntangled(2,0,1)*MaxEntangled(2,0,1)'*eye(4)*da; % identity map
     
@@ -49,8 +53,9 @@ for j=1:numel(p)
     
     cost
 
-    cost_store(j) = log2(cost);
+    % cost_store(j) = log2(cost);
+    cost_list(j) = cost;
 end
 
-
+scatter(p, cost_list)
 
